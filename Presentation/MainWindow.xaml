@@ -1,0 +1,80 @@
+﻿<Window x:Class="Presentation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Presentation"
+        xmlns:views="clr-namespace:Presentation.Views"
+        mc:Ignorable="d"
+        DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=MainWindowViewModel}"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <DatePicker Width="200" 
+                        Height="30" 
+                        Grid.Column="1"
+                        HorizontalAlignment="Center" 
+                        SelectedDateChanged="DatePicker_SelectedDateChanged"
+                        SelectedDate="{Binding SelectedDate, Mode=TwoWay}"/>
+            <Slider x:Name="Slider" 
+                    Grid.Column="2"  
+                    Width="100" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Right"
+                    Margin="0 0 12 0"
+                    Minimum="160" 
+                    Maximum="240"/>
+        </Grid>
+
+        <Canvas Grid.Row="1">
+            <ListView Name="Board"
+                      SelectionMode="Extended"
+                      ItemsSource="{Binding ToDoItems}"
+                      Height="{Binding (FrameworkElement.ActualHeight), RelativeSource={RelativeSource AncestorType=Canvas}}"
+                      Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType=Canvas}}"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto"  
+                      ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Vertical"
+                                   ItemHeight="{Binding ElementName=Slider, Path=Value}"
+                                   ItemWidth="{Binding ElementName=Slider, Path=Value}"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <views:Card />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackPanel Canvas.Bottom="12"
+                        Canvas.Right="6">
+                <StackPanel.Resources>
+                    <ResourceDictionary>
+                        <ResourceDictionary.MergedDictionaries>
+                            <ResourceDictionary Source="ResourceDictionaries/MainWindow.xaml"/>
+                        </ResourceDictionary.MergedDictionaries>
+                    </ResourceDictionary>
+                </StackPanel.Resources>
+                <Button Command="{Binding RemoveToDoItemCommand}"
+                        CommandParameter="{Binding ElementName=Board, Path=SelectedItems}"
+                        Background="#F4F4F4"
+                        Content="{StaticResource DeleteIcon}">
+                </Button>
+                <Button Background="LightGreen"
+                        Command="{Binding AddToDoItemCommand}"
+                        Content="{StaticResource AddIcon}">
+                </Button>
+            </StackPanel>
+        </Canvas>
+    </Grid>
+</Window>
