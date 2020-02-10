@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Content Include="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets/**" CopyToOutputDirectory="PreserveNewest"/>
     <ProjectReference Include="..\Infrastructre\Infrastructre.csproj" />
     <ProjectReference Include="..\Persistence\Persistence.csproj" />
   </ItemGroup>

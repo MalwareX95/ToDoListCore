@@ -1,6 +1,8 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces;
+using Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Notifications.Wpf;
 using System;
 using System.Collections.Generic;
@@ -13,7 +15,7 @@ namespace Infrastructre.Services
     public class NotificationService : INotificationService
     {
         public int MaxNotificationCount { get; } = 5;
-        public TimeSpan NotificationPeriod { get; } = TimeSpan.FromMinutes(1);
+        public TimeSpan NotificationPeriod { get; } = TimeSpan.FromMinutes(3);
 
         private Timer IncomingNotificationChecker;
 
@@ -21,7 +23,7 @@ namespace Infrastructre.Services
 
         private readonly IApplicationDbContext dbContext;
 
-        public NotificationService(IApplicationDbContext dbContext)
+        public NotificationService(IApplicationDbContext dbContext, IOptions<Settings> settings)
         {
             this.dbContext = dbContext;
             Timers = new Dictionary<ToDoItem, Timer>(MaxNotificationCount);

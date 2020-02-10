@@ -33,12 +33,12 @@
     </Style>
     <Image x:Key="AddIcon">
         <Image.Source>
-            <BitmapImage UriSource="../Assets/add.png" />
+            <BitmapImage UriSource="/Assets/add.png" />
         </Image.Source>
     </Image>
     <Image x:Key="DeleteIcon">
         <Image.Source>
-            <BitmapImage UriSource="../Assets/delete.png" />
+            <BitmapImage UriSource="/Assets/delete.png" />
         </Image.Source>
     </Image>
 </ResourceDictionary>

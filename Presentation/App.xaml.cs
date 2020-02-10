@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.Models;
 using Infrastructre;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,8 +47,7 @@ namespace Presentation
             services.AddDomain();
             services.AddInfrastructre();
             services.AddPersistence(Configuration);
-            //services.Configure<AppSettings>
-            //    (Configuration.GetSection(nameof(AppSettings)));
+            services.Configure<Settings>(Configuration.GetSection("settings"));
         }
     }
 }
