@@ -14,7 +14,7 @@ namespace Domain.Models
 {
     public class MainWindowViewModel : IModel, INotifyPropertyChanged
     {
-        public MainWindowViewModel(IApplicationDbContext dbContext, INotificationService notificationService)
+        public MainWindowViewModel(ApplicationDbContextBase dbContext, INotificationService notificationService)
         {
 
             ToDoItems = new ObservableCollection<ToDoItem>();
@@ -41,16 +41,16 @@ namespace Domain.Models
 
         public ICommand AddToDoItemCommand { get; protected set; }
         public ICommand RemoveToDoItemCommand { get; protected set; }
-        public IApplicationDbContext DbContext { get; }
+        public ApplicationDbContextBase DbContext { get; }
         public INotificationService NotificationService { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void AddToDoItemCommand_Execute(object parameter)
+        private void AddToDoItemCommand_Execute(object _)
         {
             var todoItem = new ToDoItem { EventDay = SelectedDate };
             ToDoItems.Add(todoItem);
-            DbContext.ToDoItems.Add(todoItem);
+            DbContext.Add(todoItem);
         }
 
         private bool RemoveToDoItemCommand_CanExecute(object parameter)
@@ -68,7 +68,7 @@ namespace Domain.Models
                 .ForEach(x =>
                 {
                     ToDoItems.Remove(x);
-                    if (x.Id != default) DbContext.ToDoItems.Remove(x);
+                    if (!DbContext.Entry(x).IsKeySet) DbContext.Remove(x);
                     NotificationService.CancelNotification(x);
                 });
         }

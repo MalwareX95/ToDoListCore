@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces;
+﻿using Domain;
+using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +14,8 @@ namespace Persistence
         public static void AddPersistence(this IServiceCollection @this, IConfiguration configuration)
         {
             @this.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("defaultConnection")));
-            @this.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+            //@this.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+            @this.AddScoped<ApplicationDbContextBase>(provider => provider.GetRequiredService<ApplicationDbContext>());
         }
     }
 }

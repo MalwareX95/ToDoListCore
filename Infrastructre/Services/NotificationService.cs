@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain;
+using Domain.Entities;
 using Domain.Interfaces;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -21,9 +22,9 @@ namespace Infrastructre.Services
 
         private Dictionary<ToDoItem, Timer> Timers;
 
-        private readonly IApplicationDbContext dbContext;
+        private readonly ApplicationDbContextBase dbContext;
 
-        public NotificationService(IApplicationDbContext dbContext, IOptions<Settings> settings)
+        public NotificationService(ApplicationDbContextBase dbContext, IOptions<Settings> settings)
         {
             this.dbContext = dbContext;
             Timers = new Dictionary<ToDoItem, Timer>(MaxNotificationCount);
